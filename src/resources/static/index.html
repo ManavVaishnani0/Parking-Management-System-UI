@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Parking System</title>
+    <style>
+        body {
+            text-align: center;
+            background: black;
+            color: white;
+            font-family: Arial;
+        }
+        input, button {
+            padding: 10px;
+            margin: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Parking Management System</h1>
+
+<input id="vehicle" placeholder="Enter Vehicle Number">
+
+<br>
+
+<button onclick="enter()">Enter Parking</button>
+<button onclick="exit()">Exit Parking</button>
+
+<p id="output"></p>
+
+<script>
+function enter() {
+    let num = document.getElementById("vehicle").value;
+
+    fetch(`/enter?number=${num}`)
+        .then(res => res.text())
+        .then(data => document.getElementById("output").innerText = data);
+}
+
+function exit() {
+    fetch('/exit')
+        .then(res => res.text())
+        .then(data => document.getElementById("output").innerText = data);
+}
+</script>
+
+</body>
+</html>
