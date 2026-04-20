@@ -1,12 +1,11 @@
-package main.java.com.parking.model;
+package com.parking.model;
 
 public class ParkingSlot {
     private int slotId;
-    private boolean available;
+    private boolean available = true;
 
     public ParkingSlot(int slotId) {
         this.slotId = slotId;
-        this.available = true;
     }
 
     public boolean isAvailable() {

@@ -1,4 +1,4 @@
-package main.java.com.parking.model;
+package com.parking.model;
 
 public class ParkingSystem {
 

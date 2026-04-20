@@ -1,33 +1,32 @@
-package main.java.com.parking.service;
+package com.parking.service;
 
-import com.parking.model.Vehicle;
-import com.parking.model.ParkingSlot;
-import com.parking.model.Ticket;
-import com.parking.model.Payment;
-import com.parking.model.ParkingSystem;
+import org.springframework.stereotype.Service;
+import com.parking.model.*;
 
+@Service
 public class ParkingService {
 
-    private ParkingSystem system = new ParkingSystem();
-    private ParkingSlot slot = new ParkingSlot(101);
-    private Vehicle vehicle;
+    private final ParkingSystem system = new ParkingSystem();
+    private final ParkingSlot slot = new ParkingSlot(101);
+    private Vehicle vehicle = null;
 
     public String enter(String number) {
+        if (number == null || number.trim().isEmpty()) {
+            return "❌ Enter vehicle number!";
+        }
+
+        if (!system.checkAvailability(slot)) {
+            return "❌ Parking Full!";
+        }
 
         vehicle = new Vehicle(1, number);
-
-        if (system.checkAvailability(slot)) {
-            system.assignSlot(slot);
-            return "Vehicle " + number + " parked in Slot " + slot.getSlotId();
-        } else {
-            return "Parking Full!";
-        }
+        system.assignSlot(slot);
+        return "✅ Vehicle " + number + " parked in Slot " + slot.getSlotId();
     }
 
     public String exit() {
-
         if (vehicle == null) {
-            return "No vehicle to exit!";
+            return "❌ No vehicle to exit!";
         }
 
         Ticket ticket = system.generateTicket();
@@ -37,6 +36,7 @@ public class ParkingService {
         vehicle.exitParking();
         slot.freeSlot();
 
+        vehicle = null; // reset state
         return "🚪 Vehicle exited. Fee Paid: ₹" + fee;
     }
 }

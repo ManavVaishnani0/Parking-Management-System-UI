@@ -17,30 +17,48 @@
 </head>
 <body>
 
-<h1>Parking Management System</h1>
+<h1>🚗 Parking Management System</h1>
 
 <input id="vehicle" placeholder="Enter Vehicle Number">
 
 <br>
 
-<button onclick="enter()">Enter Parking</button>
-<button onclick="exit()">Exit Parking</button>
+<button onclick="enterParking()">Enter Parking</button>
+<button onclick="exitParking()">Exit Parking</button>
 
 <p id="output"></p>
 
 <script>
-function enter() {
+function enterParking() {
     let num = document.getElementById("vehicle").value;
 
     fetch(`/enter?number=${num}`)
-        .then(res => res.text())
-        .then(data => document.getElementById("output").innerText = data);
+        .then(res => {
+            if (!res.ok) throw new Error("HTTP error");
+            return res.text();
+        })
+        .then(data => {
+            document.getElementById("output").innerText = data;
+        })
+        .catch(err => {
+            console.error(err);
+            document.getElementById("output").innerText = "Server Error!";
+        });
 }
 
-function exit() {
-    fetch('/exit')
-        .then(res => res.text())
-        .then(data => document.getElementById("output").innerText = data);
+function exitParking() {
+    fetch(`/exit`)
+        .then(res => {
+            if (!res.ok) throw new Error("HTTP error");
+            return res.text();
+        })
+        .then(data => {
+            document.getElementById("output").innerText = data;
+        })
+        .catch(err => {
+            console.error(err);
+            document.getElementById("output").innerText = "Server Error!";
+        });
 }
 </script>
 
